@@ -49,6 +49,87 @@ public class ApiClient {
 	  this.lastToken = tokenNode.asText();
 	  return this.lastToken;
 	}
+  
+//--- Friends & DM ---
+
+public java.util.List<java.util.Map<String,Object>> searchUsers(String q) throws Exception {
+ var url = baseUrl + "/api/users/search?q=" + java.net.URLEncoder.encode(q, java.nio.charset.StandardCharsets.UTF_8);
+ var req = java.net.http.HttpRequest.newBuilder(java.net.URI.create(url))
+     .header("Authorization", "Bearer " + lastToken)
+     .GET().build();
+ var res = http.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+ if (res.statusCode()!=200) throw new RuntimeException("search failed: " + res.body());
+ var arr = mapper.readTree(res.body());
+ var out = new java.util.ArrayList<java.util.Map<String,Object>>();
+ for (var n : arr) {
+   out.add(java.util.Map.of(
+       "id", n.get("id").asText(),
+       "username", n.get("username").asText(),
+       "displayName", n.get("displayName").asText()
+   ));
+ }
+ return out;
+}
+
+public String sendFriendRequest(String toUsername) throws Exception {
+ var body = mapper.writeValueAsString(java.util.Map.of("toUsername", toUsername));
+ var req = java.net.http.HttpRequest.newBuilder(java.net.URI.create(baseUrl + "/api/friends/requests"))
+     .header("Authorization", "Bearer " + lastToken)
+     .header("Content-Type", "application/json")
+     .POST(java.net.http.HttpRequest.BodyPublishers.ofString(body)).build();
+ var res = http.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+ if (res.statusCode()!=200) throw new RuntimeException("request failed: " + res.body());
+ return mapper.readTree(res.body()).get("id").asText();
+}
+
+public java.util.List<java.util.Map<String,Object>> incomingRequests() throws Exception {
+ var req = java.net.http.HttpRequest.newBuilder(java.net.URI.create(baseUrl + "/api/friends/requests/incoming"))
+     .header("Authorization", "Bearer " + lastToken).GET().build();
+ var res = http.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+ if (res.statusCode()!=200) throw new RuntimeException("incoming failed: " + res.body());
+ var arr = mapper.readTree(res.body());
+ var out = new java.util.ArrayList<java.util.Map<String,Object>>();
+ for (var n: arr) out.add(java.util.Map.of(
+     "id", n.get("id").asText(),
+     "from", n.get("from").get("username").asText(),
+     "at", n.get("createdAt").asText()
+ ));
+ return out;
+}
+
+public void acceptRequest(String requestId) throws Exception {
+ var req = java.net.http.HttpRequest.newBuilder(java.net.URI.create(baseUrl + "/api/friends/requests/"+requestId+"/accept"))
+     .header("Authorization", "Bearer " + lastToken)
+     .POST(java.net.http.HttpRequest.BodyPublishers.noBody()).build();
+ var res = http.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+ if (res.statusCode()!=200) throw new RuntimeException("accept failed: " + res.body());
+}
+
+public java.util.List<java.util.Map<String,Object>> listFriends() throws Exception {
+ var req = java.net.http.HttpRequest.newBuilder(java.net.URI.create(baseUrl + "/api/friends"))
+     .header("Authorization", "Bearer " + lastToken).GET().build();
+ var res = http.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+ if (res.statusCode()!=200) throw new RuntimeException("friends failed: " + res.body());
+ var arr = mapper.readTree(res.body());
+ var out = new java.util.ArrayList<java.util.Map<String,Object>>();
+ for (var n : arr) out.add(java.util.Map.of(
+     "username", n.get("username").asText(),
+     "displayName", n.get("displayName").asText()
+ ));
+ return out;
+}
+
+public String openDm(String peerUsername) throws Exception {
+ var body = mapper.writeValueAsString(java.util.Map.of("username", peerUsername));
+ var req = java.net.http.HttpRequest.newBuilder(java.net.URI.create(baseUrl + "/api/dm/open"))
+     .header("Authorization", "Bearer " + lastToken)
+     .header("Content-Type", "application/json")
+     .POST(java.net.http.HttpRequest.BodyPublishers.ofString(body)).build();
+ var res = http.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+ if (res.statusCode()!=200) throw new RuntimeException("open dm failed: " + res.body());
+ return mapper.readTree(res.body()).get("conversationId").asText();
+}
+
 
 
   public void register(String username, String displayName, String password) throws Exception {
@@ -100,5 +181,32 @@ public class ApiClient {
 	  }
 	  return lines;
 	}
+  public void declineRequest(String requestId) throws Exception {
+	  var req = java.net.http.HttpRequest.newBuilder(
+	      java.net.URI.create(baseUrl + "/api/friends/requests/" + requestId + "/decline"))
+	      .header("Authorization", "Bearer " + lastToken)
+	      .POST(java.net.http.HttpRequest.BodyPublishers.noBody())
+	      .build();
+	  var res = http.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+	  if (res.statusCode()!=200) throw new RuntimeException("decline failed: " + res.body());
+	}
+  
+  public java.util.List<java.util.Map<String,Object>> outgoingRequests() throws Exception {
+	  var req = java.net.http.HttpRequest.newBuilder(
+	      java.net.URI.create(baseUrl + "/api/friends/requests/outgoing"))
+	      .header("Authorization", "Bearer " + lastToken).GET().build();
+	  var res = http.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+	  if (res.statusCode()!=200) throw new RuntimeException("outgoing failed: " + res.body());
+	  var arr = mapper.readTree(res.body());
+	  var out = new java.util.ArrayList<java.util.Map<String,Object>>();
+	  for (var n: arr) out.add(java.util.Map.of(
+	      "id", n.get("id").asText(),
+	      "to", n.get("to").get("username").asText(),
+	      "at", n.get("createdAt").asText()
+	  ));
+	  return out;
+	}
+
+
 
 }

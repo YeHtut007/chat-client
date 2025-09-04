@@ -1,0 +1,155 @@
+.tab-pane .tab-header-area { -fx-padding: 0 0 4 0; }
+.list-view { -fx-background-insets: 0; }
+/* ===== App theme (dark, soft, premium) ===== */
+.root {
+  -fx-font-family: "Inter", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  -fx-background-color:
+    linear-gradient(to bottom right, #0f1116, #0b0d12);
+  -fx-text-fill: #e7ebf0;
+}
+
+/* ===== App Bar (top) ===== */
+.app-bar {
+  -fx-padding: 12 16;
+  -fx-background-color: rgba(255,255,255,0.02);
+  -fx-border-color: rgba(255,255,255,0.06);
+  -fx-border-width: 0 0 1 0;
+  -fx-alignment: center-left;
+}
+.app-title {
+  -fx-font-size: 16px;
+  -fx-font-weight: 700;
+  -fx-text-fill: #f0f3f8;
+}
+.app-spacer { -fx-hgrow: ALWAYS; }
+.app-user {
+  -fx-background-color: rgba(255,255,255,0.06);
+  -fx-background-radius: 999;
+  -fx-padding: 6 10;
+  -fx-font-size: 12px;
+  -fx-text-fill: #cbd5e1;
+}
+
+/* ===== Inputs ===== */
+.text-field, .password-field {
+  -fx-background-color: rgba(255,255,255,0.05);
+  -fx-background-radius: 12;
+  -fx-border-radius: 12;
+  -fx-border-color: transparent;
+  -fx-text-fill: #e7ebf0;
+  -fx-prompt-text-fill: #8b94a6;
+  -fx-padding: 10 12;
+}
+.text-field:focused, .password-field:focused {
+  -fx-background-color: rgba(255,255,255,0.08);
+  -fx-border-color: rgba(86,156,214,0.6);
+}
+
+/* ===== Buttons ===== */
+.button {
+  -fx-background-radius: 12;
+  -fx-padding: 8 12;
+  -fx-font-weight: 600;
+  -fx-text-fill: #e7ebf0;
+  -fx-background-color: rgba(255,255,255,0.06);
+  -fx-border-color: transparent;
+}
+.button:hover { -fx-background-color: rgba(255,255,255,0.10); }
+.button:pressed { -fx-background-color: rgba(255,255,255,0.14); }
+
+.btn-primary {
+  -fx-background-color: linear-gradient(to bottom right, #4ea6ff, #4b80ff);
+  -fx-text-fill: white;
+}
+.btn-primary:hover { -fx-background-color: linear-gradient(to bottom right, #71b6ff, #6a95ff); }
+.btn-primary:pressed { -fx-background-color: linear-gradient(to bottom right, #3d8ef5, #3d73f0); }
+
+.btn-danger {
+  -fx-background-color: linear-gradient(to bottom right, #ff5a6b, #ff3b47);
+  -fx-text-fill: white;
+}
+.btn-danger:hover { -fx-background-color: linear-gradient(to bottom right, #ff7481, #ff5662); }
+
+.btn-ghost {
+  -fx-background-color: transparent;
+  -fx-border-color: rgba(255,255,255,0.08);
+}
+.btn-ghost:hover { -fx-background-color: rgba(255,255,255,0.06); }
+
+/* ===== Lists ===== */
+.list-view {
+  -fx-background-color: transparent;
+  -fx-control-inner-background: transparent;
+  -fx-background-insets: 0;
+  -fx-padding: 4;
+  -fx-border-color: rgba(255,255,255,0.06);
+  -fx-border-width: 1;
+  -fx-border-radius: 12;
+  -fx-background-radius: 12;
+}
+.list-cell {
+  -fx-background-color: transparent;
+  -fx-padding: 10 12;
+}
+.list-cell:filled:hover { -fx-background-color: rgba(255,255,255,0.04); }
+.list-cell:filled:selected { -fx-background-color: rgba(86,156,214,0.15); }
+
+/* ===== Tabs (make them look like segmented controls) ===== */
+.tab-pane {
+  -fx-padding: 0;
+}
+.tab-header-area {
+  -fx-background-color: transparent;
+  -fx-padding: 0 0 10 0;
+}
+.tab {
+  -fx-background-insets: 0;
+  -fx-background-radius: 999;
+  -fx-padding: 6 14;
+  -fx-background-color: transparent;
+  -fx-text-base-color: #cbd5e1;
+  -fx-focus-color: transparent;
+}
+.tab:hover { -fx-background-color: rgba(255,255,255,0.06); }
+.tab:selected {
+  -fx-background-color: rgba(86,156,214,0.24);
+  -fx-text-base-color: #e7ebf0;
+}
+.tab-header-background { -fx-background-color: transparent; }
+
+/* ===== Chat bubbles ===== */
+.bubble-me {
+  -fx-background-color: linear-gradient(to bottom right, #3b82f6, #2563eb);
+  -fx-background-radius: 18;
+  -fx-padding: 10 12;
+  -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.35), 12, 0.2, 0, 4);
+}
+.bubble-other {
+  -fx-background-color: rgba(255,255,255,0.06);
+  -fx-background-radius: 18;
+  -fx-padding: 10 12;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 10, 0.2, 0, 3);
+}
+.msg-header {
+  -fx-text-fill: rgba(255,255,255,0.72);
+  -fx-font-size: 11px;
+  -fx-font-weight: 600;
+}
+.msg-body {
+  -fx-text-fill: white;
+  -fx-font-size: 14px;
+}
+
+/* ===== Small helpers ===== */
+.section {
+  -fx-background-color: rgba(255,255,255,0.03);
+  -fx-background-radius: 16;
+  -fx-padding: 12;
+  -fx-border-color: rgba(255,255,255,0.06);
+  -fx-border-radius: 16;
+}
+.heading {
+  -fx-text-fill: #e7ebf0;
+  -fx-font-size: 14px;
+  -fx-font-weight: 700;
+}

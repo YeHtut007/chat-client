@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 public class StompService {
   private final WebSocketStompClient client;
   private StompSession session;
+  
 
   public StompService() {
 	  var wsClient = new org.springframework.web.socket.client.standard.StandardWebSocketClient();
@@ -70,7 +71,8 @@ public class StompService {
 
   public void send(String conversationId, String content) {
     if (session == null || !session.isConnected()) throw new IllegalStateException("Not connected");
-    var msg = new ChatMessage(UUID.fromString(conversationId), "", content, null); // server fills sender + timestamp
+    var msg = new ChatMessage(null, UUID.fromString(conversationId), "", content, null);
+
     session.send("/app/send", msg);
   }
 }
